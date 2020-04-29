@@ -3,9 +3,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {
   InitialState,
   NavigationContainer,
+  NavigationContainerRef,
   useLinking,
 } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import '@tensorflow/tfjs-react-native';
+import * as tf from '@tensorflow/tfjs';
 
 import { Authentication } from './screens/Authentication';
 import { SamplePage } from './screens/SamplePage';
@@ -19,11 +22,12 @@ import { APP_PREFIXES, Screen } from './constants';
 export const Stack = createStackNavigator();
 
 export const Navigator = (): React.ReactElement => {
-  const ref = React.useRef();
+  const navigationContainerRef = React.useRef<NavigationContainerRef>(null);
 
   const [isReady, setIsReady] = React.useState(false);
+  const [isTfReady, setIsTfReady] = React.useState(false);
 
-  const { getInitialState } = useLinking(ref, {
+  const { getInitialState } = useLinking(navigationContainerRef, {
     prefixes: APP_PREFIXES,
     config: {
       [Screen.Authentication]: 'authentication',
@@ -38,6 +42,15 @@ export const Navigator = (): React.ReactElement => {
     isLoadingSelector(Loader.InitializeApplication),
   );
 
+  const checkTfReady = async (): Promise<void> => {
+    // Wait for tf to be ready.
+    await tf.ready();
+
+    await tf.setBackend('cpu');
+    // Signal to the app that tensorflow.js can now be used.
+    setIsTfReady(true);
+  };
+
   const credentials = useSelector(credentialsSelector);
 
   React.useEffect(() => {
@@ -50,6 +63,14 @@ export const Navigator = (): React.ReactElement => {
       }
 
       setIsReady(true);
+      // TODO: выяснить в чем трабл
+      // checkTfReady()
+      //   .then(() => {
+      //     console.log('then isTfReady', isTfReady);
+      //   })
+      //   .catch(error => {
+      //     console.log('error', error);
+      //   });
     });
   }, [getInitialState]);
 
@@ -60,7 +81,7 @@ export const Navigator = (): React.ReactElement => {
   }
 
   return (
-    <NavigationContainer initialState={initialState} ref={ref}>
+    <NavigationContainer initialState={initialState} ref={navigationContainerRef}>
       <Stack.Navigator>
         {isSignedIn ? (
           <>

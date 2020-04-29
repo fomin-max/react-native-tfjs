@@ -57,5 +57,7 @@
     <string>Your message to user when the camera is accessed for the first time</string>
     <key>NSFaceIDUsageDescription</key>
     <string>Enabling Face ID allows you quick and secure access to your account.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to use the camera</string>
 </dict>
 </plist>
