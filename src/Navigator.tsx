@@ -1,4 +1,5 @@
 import React from 'react';
+import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
   InitialState,
@@ -18,6 +19,7 @@ import { credentialsSelector } from './features/Keychain/selectors';
 import { isNotEmpty } from './utils/helpers';
 import { Loader } from './features/Loaders/enums';
 import { APP_PREFIXES, Screen } from './constants';
+import { RealtimeDemo } from './features/Realtime/Realtime';
 
 export const Stack = createStackNavigator();
 
@@ -43,10 +45,10 @@ export const Navigator = (): React.ReactElement => {
   );
 
   const checkTfReady = async (): Promise<void> => {
+    await tf.setBackend('rn-webgl');
     // Wait for tf to be ready.
     await tf.ready();
 
-    await tf.setBackend('cpu');
     // Signal to the app that tensorflow.js can now be used.
     setIsTfReady(true);
   };
@@ -63,29 +65,47 @@ export const Navigator = (): React.ReactElement => {
       }
 
       setIsReady(true);
-      // TODO: выяснить в чем трабл
-      // checkTfReady()
-      //   .then(() => {
-      //     console.log('then isTfReady', isTfReady);
-      //   })
-      //   .catch(error => {
-      //     console.log('error', error);
-      //   });
+
+      checkTfReady()
+        .then(() => {
+          console.log('then');
+        })
+        .catch((error) => {
+          console.log('error', error);
+        });
     });
   }, [getInitialState]);
+
+  React.useEffect(() => {
+    if (isTfReady) {
+      const runMultiplication = async (x: number, y: number): Promise<void> => {
+        const result = await tf
+          .scalar(x)
+          .mul(tf.scalar(y))
+          .array();
+        console.log('result', result);
+        // setResult(result[0]);
+      };
+      runMultiplication(4125, 1732);
+    }
+  }, [isTfReady]);
 
   const isSignedIn = isNotEmpty(credentials);
 
   if (isApplicationInitializing || !isReady) {
     return <Splash />;
   }
-
+  console.log('isTfReady', isTfReady);
   return (
-    <NavigationContainer initialState={initialState} ref={navigationContainerRef}>
+    <NavigationContainer
+      initialState={initialState}
+      ref={navigationContainerRef}
+    >
       <Stack.Navigator>
         {isSignedIn ? (
           <>
             <Stack.Screen name={Screen.SamplePage} component={SamplePage} />
+            <Stack.Screen name={Screen.RealtimeDemo} component={RealtimeDemo} />
           </>
         ) : (
           <>

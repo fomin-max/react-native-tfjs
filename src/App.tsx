@@ -7,7 +7,7 @@ import { createServerErrorInterceptor } from './features/Errors/createServerErro
 
 createServerErrorInterceptor();
 
-dispatch.application.initializeApplication();
+// dispatch.application.initializeApplication();
 
 export const App = (): React.ReactElement => (
   <Provider store={store}>

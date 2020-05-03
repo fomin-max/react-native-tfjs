@@ -10,8 +10,9 @@ import { useSelector } from 'react-redux';
 import { dispatch } from '../../store';
 import { profileStateSelector } from '../../features/Profile/selectors';
 import { getFullName } from '../../utils/helpers';
+import { Screen } from '../../constants';
 
-export const SamplePage = (): React.ReactElement | null => {
+export const SamplePage = ({ navigation }): React.ReactElement | null => {
   const [permissions, setPermissions] = React.useState<
     PushNotificationPermissions
   >({});
@@ -66,6 +67,9 @@ export const SamplePage = (): React.ReactElement | null => {
         )}
         <Button primary onPress={authenticate}>
           <Text>Enter with Touch ID</Text>
+        </Button>
+        <Button primary onPress={() => navigation.push(Screen.RealtimeDemo)}>
+          <Text>Realtime demo</Text>
         </Button>
         <Button onPress={() => dispatch.authentication.signOut()}>
           <Text>Sign Out</Text>
