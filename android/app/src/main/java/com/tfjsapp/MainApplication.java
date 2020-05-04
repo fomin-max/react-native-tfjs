@@ -7,6 +7,7 @@ import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 import org.unimodules.core.interfaces.SingletonModule;
 
 import com.rnfs.RNFSPackage;
+import com.horcrux.svg.SvgPackage;
 
 import android.app.Application;
 import android.content.Context;
@@ -60,8 +61,9 @@ public class MainApplication extends Application implements ReactApplication {
 
   protected List<ReactPackage> getPackages() {
     return Arrays.<ReactPackage>asList(
-      new MainReactPackage(), // <---- add comma
-      new RNFSPackage() // <---------- add package
+      new SvgPackage(),
+      new MainReactPackage(),
+      new RNFSPackage()
     );
   }
 

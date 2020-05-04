@@ -37,6 +37,10 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow $(PRODUCT_NAME) to use the camera</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Enabling Face ID allows you quick and secure access to your account.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>
@@ -53,11 +57,15 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSCameraUsageDescription</key>
-    <string>Your message to user when the camera is accessed for the first time</string>
-    <key>NSFaceIDUsageDescription</key>
-    <string>Enabling Face ID allows you quick and secure access to your account.</string>
+	<key>NSMicrophoneUsageDescription</key>
+    <string>Need microphone access for uploading videos</string>
     <key>NSCameraUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to use the camera</string>
+    <string>Need camera access for uploading Images</string>
+    <key>NSLocationUsageDescription</key>
+    <string>Need location access for updating nearby friends</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app will use your location to show cool stuffs near you.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Need Library access for uploading Images</string>
 </dict>
 </plist>

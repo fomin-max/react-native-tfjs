@@ -11,7 +11,7 @@ import '@tensorflow/tfjs-react-native';
 import * as tf from '@tensorflow/tfjs';
 
 import { Authentication } from './screens/Authentication';
-import { SamplePage } from './screens/SamplePage';
+import { SamplePage, Realtime } from './screens';
 import { isLoadingSelector } from './features/Loaders/selectors';
 import { Splash } from './screens/Splash';
 import { credentialsSelector } from './features/Keychain/selectors';
@@ -46,7 +46,6 @@ export const Navigator = (): React.ReactElement => {
     // Wait for tf to be ready.
     await tf.ready();
 
-    await tf.setBackend('cpu');
     // Signal to the app that tensorflow.js can now be used.
     setIsTfReady(true);
   };
@@ -64,13 +63,13 @@ export const Navigator = (): React.ReactElement => {
 
       setIsReady(true);
       // TODO: выяснить в чем трабл
-      // checkTfReady()
-      //   .then(() => {
-      //     console.log('then isTfReady', isTfReady);
-      //   })
-      //   .catch(error => {
-      //     console.log('error', error);
-      //   });
+      checkTfReady()
+        .then(() => {
+          console.log('then isTfReady', isTfReady);
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
     });
   }, [getInitialState]);
 
@@ -86,6 +85,7 @@ export const Navigator = (): React.ReactElement => {
         {isSignedIn ? (
           <>
             <Stack.Screen name={Screen.SamplePage} component={SamplePage} />
+            <Stack.Screen name={Screen.Realtime} component={Realtime} />
           </>
         ) : (
           <>
