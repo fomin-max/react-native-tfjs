@@ -8,10 +8,8 @@ import {
 } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import '@tensorflow/tfjs-react-native';
-import * as tf from '@tensorflow/tfjs';
 
-import { Authentication } from './screens/Authentication';
-import { SamplePage, Realtime } from './screens';
+import { Main, RealTimeDetection, Authentication } from './screens';
 import { isLoadingSelector } from './features/Loaders/selectors';
 import { Splash } from './screens/Splash';
 import { credentialsSelector } from './features/Keychain/selectors';
@@ -19,13 +17,18 @@ import { isNotEmpty } from './utils/helpers';
 import { Loader } from './features/Loaders/enums';
 import { APP_PREFIXES, Screen } from './constants';
 
-export const Stack = createStackNavigator();
+export type RootStackParamList = {
+  [Screen.Main]: undefined,
+  [Screen.Authentication]: undefined,
+  [Screen.RealTimeDetection]: undefined,
+};
+
+export const Stack = createStackNavigator<RootStackParamList>();
 
 export const Navigator = (): React.ReactElement => {
   const navigationContainerRef = React.useRef<NavigationContainerRef>(null);
 
   const [isReady, setIsReady] = React.useState(false);
-  const [isTfReady, setIsTfReady] = React.useState(false);
 
   const { getInitialState } = useLinking(navigationContainerRef, {
     prefixes: APP_PREFIXES,
@@ -42,14 +45,6 @@ export const Navigator = (): React.ReactElement => {
     isLoadingSelector(Loader.InitializeApplication),
   );
 
-  const checkTfReady = async (): Promise<void> => {
-    // Wait for tf to be ready.
-    await tf.ready();
-
-    // Signal to the app that tensorflow.js can now be used.
-    setIsTfReady(true);
-  };
-
   const credentials = useSelector(credentialsSelector);
 
   React.useEffect(() => {
@@ -62,14 +57,6 @@ export const Navigator = (): React.ReactElement => {
       }
 
       setIsReady(true);
-      // TODO: выяснить в чем трабл
-      checkTfReady()
-        .then(() => {
-          console.log('then isTfReady', isTfReady);
-        })
-        .catch(error => {
-          console.log('error', error);
-        });
     });
   }, [getInitialState]);
 
@@ -80,12 +67,18 @@ export const Navigator = (): React.ReactElement => {
   }
 
   return (
-    <NavigationContainer initialState={initialState} ref={navigationContainerRef}>
+    <NavigationContainer
+      initialState={initialState}
+      ref={navigationContainerRef}
+    >
       <Stack.Navigator>
         {isSignedIn ? (
           <>
-            <Stack.Screen name={Screen.SamplePage} component={SamplePage} />
-            <Stack.Screen name={Screen.Realtime} component={Realtime} />
+            <Stack.Screen name={Screen.Main} component={Main} />
+            <Stack.Screen
+              name={Screen.RealTimeDetection}
+              component={RealTimeDetection}
+            />
           </>
         ) : (
           <>

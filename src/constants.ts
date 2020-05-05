@@ -1,7 +1,7 @@
 export enum Screen {
   Authentication = 'Authentication',
-  SamplePage = 'SamplePage',
-  Realtime = 'Realtime',
+  Main = 'Main',
+  RealTimeDetection = 'RealTimeDetection',
 }
 
 export const APP_PREFIXES = ['tfjs-app://'];

@@ -1,0 +1,1 @@
+export { RealTimeDetection } from './RealTimeDetection';

@@ -1,4 +1,4 @@
 export { Authentication } from './Authentication';
 export { Splash } from './Splash';
-export { Realtime } from './Realtime';
-export { SamplePage } from './SamplePage';
+export { Main } from './Main';
+export { RealTimeDetection } from './RealTimeDetection';

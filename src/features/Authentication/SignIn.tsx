@@ -13,8 +13,8 @@ import {
 import { dispatch } from '../../store';
 
 export const SignIn = (): React.ReactElement => {
-  const [email, setEmail] = React.useState('tfjs-test@mail.ru');
-  const [password, setPassword] = React.useState('Qwerty12345');
+  const [email, setEmail] = React.useState<string>('tfjs-test@mail.ru');
+  const [password, setPassword] = React.useState<string>('Qwerty12345');
 
   const signIn = (): void => {
     dispatch.authentication.signIn({ email, password });
